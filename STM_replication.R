@@ -765,9 +765,16 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
       
       
       # --- Diagnostics ---
-      model_diagnostics <- function(model, documents) {
+      # NOTE: eval.heldout() must score a model that was never fit on the masked
+      # words, or the "held-out" likelihood is measured on data the model already
+      # saw (leakage). Refit on ho$documents first, exactly as Panel B does below
+      # (held_agg / fit_agg_held / heldout_ll_agg).
+      model_diagnostics <- function(model, documents, meta) {
         ho <- make.heldout(documents = documents, vocab = model$vocab)
-        ev <- eval.heldout(model, ho$missing)
+        set.seed(seed)
+        held_model <- fit_stm_fixedK(ho$documents, model$vocab, meta,
+                                     K_star, prev_formula, content_formula, seed)
+        ev <- eval.heldout(held_model, ho$missing)
         sc <- semanticCoherence(model, documents)
         ex <- exclusivity(model)
         list(heldout = ev$expected.heldout, mean_sc = mean(sc), mean_ex = mean(ex))
@@ -779,7 +786,7 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
       set.seed(seed)
       mod_base  <- fit_stm_fixedK(base$documents, base$vocab, base$meta,
                                   K_star, prev_formula, content_formula, seed)
-      diag_base <- model_diagnostics(mod_base, base$documents)
+      diag_base <- model_diagnostics(mod_base, base$documents, base$meta)
       
       
       # --- Robustness loop: min-tokens thresholds ---
@@ -797,7 +804,7 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
         mod <- fit_stm_fixedK(dat$documents, dat$vocab, dat$meta,
                               K_star, prev_formula, content_formula, seed)
         fits[[paste0("min", mt)]]  <- mod
-        diags[[paste0("min", mt)]] <- model_diagnostics(mod, dat$documents)
+        diags[[paste0("min", mt)]] <- model_diagnostics(mod, dat$documents, dat$meta)
         retention <- bind_rows(
           retention,
           tibble(min_tokens = mt,
