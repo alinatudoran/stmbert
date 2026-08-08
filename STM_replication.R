@@ -376,7 +376,6 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
               # top = textGrob("Diagnostic Values by Number of Topics", gp = gpar(fontsize = 18, fontface = "bold"))
             )
             dev.off()
-            browseURL(file.path(getwd(), "Figure_2a_diagnostics_K5-100.pdf"))
 
         
         
@@ -415,7 +414,6 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
             )
           
           dev.off()
-          browseURL(file.path(getwd(), "Figure_2b_coherence_exclusivity_K5-100.pdf"))
           
         
 
@@ -484,7 +482,6 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
            # top = textGrob("Diagnostic Values by Number of Topics", gp = gpar(fontsize = 18, fontface = "bold"))
           )
           dev.off()
-          browseURL(file.path(getwd(), "Figure_3a_diagnostics_K10-40.pdf"))
   
 
         
@@ -523,7 +520,6 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
             )
           
           dev.off()
-          browseURL(file.path(getwd(), "Figure_3b_coherence_exclusivity_K10-40.pdf"))
           
      
                
