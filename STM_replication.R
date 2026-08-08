@@ -89,18 +89,25 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
   # office-role filter below; review date is retained and preprocessed for the
   # metadata (year) diagnostic — see Step 5 / Appendix 7 near the end of the script.
   
-  # Filter rows where the jobTitle.Text contains any of the specified keywords
+  # Filter rows where the jobTitle.Text contains any of the specified keywords.
+  # Built from a vector (not a hand-wrapped string literal) so line breaks can't
+  # embed stray characters into the pattern, and wrapped with \\b so short
+  # keywords (e.g. "IT", "PR") only match whole words, not substrings.
+  office_role_keywords <- c(
+    "manager", "engineer", "software", "analyst", "recruiter",
+    "specialist", "data", "HR", "lead", "scientist",
+    "human", "resource", "digital", "representative", "assistant",
+    "executive", "IT", "expert", "reviewer", "director",
+    "account", "business", "intelligence", "investigator", "marketing",
+    "consultant", "developer", "finance", "learning", "training",
+    "architect", "designer", "coordinator", "project", "brand",
+    "economist", "editor", "copywriter", "PR", "administrator",
+    "planner", "machine learning", "researcher", "clerk", "advisor"
+  )
+  office_role_pattern <- paste0("\\b(", paste(office_role_keywords, collapse = "|"), ")\\b")
+
   filtered_df <- df_unique %>%
-   filter(grepl("manager|engineer|software|analyst|recruiter|\
-                 specialist|data|HR|lead|scientist|\
-                 human|resource|digital|representative|assistant|\
-                 executive|IT|expert|reviewer|director|\
-                 account|business|intelligence|investigator|marketing|\
-                 consultant|developer|finance|learning|training|\
-                 architect|designer|coordinator|project|brand|\
-                 economist|editor|copywriter|PR|administrator|\
-                 planner|machine learning|researcher|clerk|advisor",
-               jobTitle.text, ignore.case = TRUE))
+   filter(grepl(office_role_pattern, jobTitle.text, ignore.case = TRUE))
   nrow(filtered_df)
   # [1] 20188  (after removing duplicate IDs + office-role filter; paper: 20,188)
   
