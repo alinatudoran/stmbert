@@ -242,7 +242,14 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
       "ive", "im", "youre", "theyre", "weve", "whats", "cant", "wont",
       "didnt", "doesnt", "isnt", "wasnt", "werent", "arent",
       "hadnt", "hasnt", "havent", "wouldnt", "shouldnt", "couldnt",
-      "lets", "thats", "theres"
+      "lets", "thats", "theres",
+
+      # clean_text() strips the "'nt/'s/'ve/'ll/'re/'d/'m" suffix off contractions
+      # (e.g. "don't" -> "don", "doesn't" -> "doesn") before stopwords are removed,
+      # so the stems below - not the forms above - are what actually appear in the text.
+      "don", "doesn", "didn", "isn", "wasn", "weren", "aren",
+      "hadn", "hasn", "haven", "wouldn", "shouldn", "couldn",
+      "won", "let", "what", "there"
     )
 
   # Remove stop words (apply the custom list defined above)
