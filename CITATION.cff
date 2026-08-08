@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Measuring Organizational Constructs in Large-Scale Text"
+abstract: >
+  Code repository accompanying the paper "Measuring Organizational Constructs
+  in Large-Scale Text" published in Organization Studies. Implements a
+  two-stage framework that combines Structural Topic Modeling (STM) and
+  BERT-based multi-label classification to measure organizational constructs
+  from large-scale employee review data.
+type: software
+authors:
+  - family-names: Tudoran
+    given-names: Ana Alina
+    orcid: "https://orcid.org/0000-0002-1380-4775"
+  - family-names: Richter
+    given-names: Nicole Franziska
+  - family-names: Higuera Reina
+    given-names: Jeisson A.
+  - family-names: Verma
+    given-names: Surabhi
+year: 2026
+license: MIT        
+repository-code: "https://github.com/alinatudoran/stmbert"
+keywords:
+  - topic modeling
+  - STM
+  - BERT
+  - text classification
+  - organizational constructs
+  - Glassdoor
+  - employee reviews
+  - natural language processing
+preferred-citation:
+  type: article
+  title: "Measuring Organizational Constructs in Large-Scale Text"
+  journal: "Organization Studies"
+  year: 2026
+  authors:
+    - family-names: Tudoran
+      given-names: Ana Alina
+      orcid: "https://orcid.org/0000-0002-1380-4775"
+    - family-names: Richter
+      given-names: Nicole Franziska
+    - family-names: Higuera Reina
+      given-names: Jeisson A.
+    - family-names: Verma
+      given-names: Surabhi
