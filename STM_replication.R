@@ -718,8 +718,10 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
       
       # PRE-filter at textProcessor() stage, THEN prepDocuments (rebuilds IDs to 1..V)
       prep_minlen_from_processed <- function(processed, lower_thresh_vocab = 1, minlen = 0) {
-        # raw lengths from textProcessor output
-        raw_lengths <- vapply(processed$documents, length, integer(1))
+        # raw token counts from textProcessor output (sum of row 2 = per-type counts;
+        # length() alone would count matrix cells = 2x unique word TYPES, not tokens)
+        raw_lengths <- vapply(processed$documents,
+                              function(x) if (length(x)) sum(x[2, ]) else 0L, integer(1))
         keep_idx <- which(raw_lengths >= minlen & raw_lengths > 0)
         
         # subset BEFORE prep
