@@ -584,21 +584,29 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
 
         
 
-  # Save top 10 most representative comments for each topic 
-  # NOTE: exports verbatim review text (meta$pros). Requires the raw review
-  #  file.
+  # Save top 10 most representative comments for each topic
+  # NOTE: exports verbatim review text. Requires the raw review file.
+
+        # Named vector: reviewId -> original (pre-cleaning) pros text.
+        # Defined here (rather than only later, near doc_topic_proportions_30)
+        # so it's available for the verbatim quote export below.
+        original_pros_map <- setNames(as.character(filtered_df$pros), filtered_df$reviewId)
 
         # Helper function to save quotes with IDs to Excel
-        save_topic_quotes_with_ids <- function(model, K, meta) {
+        save_topic_quotes_with_ids <- function(model, K, meta, original_pros_map) {
           wb <- createWorkbook()
 
           for (topic_num in 1:K) {
+            # texts = meta$pros only supplies what findThoughts ranks/selects on
+            # (meta$pros is what the model was fit on); the actual exported quote
+            # is looked up from original_pros_map so it reads as a real sentence,
+            # not the cleaned/stopword-stripped training text.
             thoughts_result <- findThoughts(model, texts = meta$pros, topics = topic_num, n = 10)
-            quotes <- thoughts_result$docs[[1]]
             indices <- thoughts_result$index[[1]]
 
             # Replace 'id' if metadata uses a different column name
             doc_ids <- meta$id[indices]
+            quotes <- original_pros_map[as.character(doc_ids)]
 
             df <- data.frame(ID = doc_ids, Quote = quotes, stringsAsFactors = FALSE)
             sheet_name <- paste0("Topic_", topic_num)
@@ -614,9 +622,9 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
         }
 
         # Run for all three models
-        save_topic_quotes_with_ids(selected_model_24, 24, meta)
-        save_topic_quotes_with_ids(selected_model_27, 27, meta)
-        save_topic_quotes_with_ids(selected_model_30, 30, meta)
+        save_topic_quotes_with_ids(selected_model_24, 24, meta, original_pros_map)
+        save_topic_quotes_with_ids(selected_model_27, 27, meta, original_pros_map)
+        save_topic_quotes_with_ids(selected_model_30, 30, meta, original_pros_map)
 
 
         
@@ -673,11 +681,9 @@ library(readxl)       # for reading the labeled dataset (Excel) - Step 6
 
 
       # Get the original reviews without grammar correction
-        
-      # Create a named vector: reviewId -> original pros
-      original_pros_map <- setNames(as.character(filtered_df$pros), filtered_df$reviewId)
 
-      # Lookup the original pros for each doc_id
+      # Lookup the original pros for each doc_id (original_pros_map defined above,
+      # near save_topic_quotes_with_ids)
       doc_topic_proportions_30$original_pros <- original_pros_map[as.character(doc_topic_proportions_30$doc_id)]
 
       # Reorder columns: place original_pros right after doc_text
