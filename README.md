@@ -5,6 +5,9 @@
 Companion code for: "Measuring Organizational Constructs in Large-Scale Text:
 An interpretive framework combining topic modeling and BERT", *Organization Studies*.
 
+If you use this code please cite:  
+Tudoran, A. A., Richter, N. F., Higuera Reina, J., & Verma, S. (2026). Measuring organizational constructs in large-scale text: An interpretive framework combining topic modeling and BERT. Organization Studies. https://doi.org/10.1177/01708406261499506
+
 Structural Topic Modeling (STM) analysis of Glassdoor employee reviews, Stage 1 of the
 two-stage construct-measurement framework. This is the R script for the STM
 operationalization: data cleaning, text preprocessing, threshold/K selection, the
